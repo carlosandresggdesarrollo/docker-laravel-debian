@@ -11,19 +11,23 @@ RUN \
 RUN apt-get install apache2  -y 
 RUN /etc/init.d/apache2 restart
 
+
+
+RUN apt  install wget -y
+RUN apt install -y curl unzip
+
 #Installation of PHP 8
-RUN apt-get install ca-certificates apt-transport-https software-properties-common wget curl lsb-release -y
-RUN curl -sSL https://packages.sury.org/php/README.txt |  bash -x && \
-          apt-get update && \
-          apt-get -y upgrade && \
-          apt install php8.1 libapache2-mod-php8.1 -y 
-RUN apt install php8.1-fpm libapache2-mod-fcgid \
-          && apt install -y php8.1-bcmath php8.1-xml \ 
-              php8.1-mysql  php8.1-zip  php8.1-intl \
-              php8.1-ldap  php8.1-gd  php8.1-cli \ 
-              php8.1-bz2  php8.1-curl  php8.1-mbstring \
-              php8.1-pgsql php8.1-opcache php8.1-soap  php8.1-cgi 
-       
+RUN  apt -y install lsb-release apt-transport-https ca-certificates 
+RUN  wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg 
+RUN  echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" |  tee /etc/apt/sources.list.d/php.list
+RUN apt-get update 
+RUN  apt install php7.4 -y
+RUN  apt install php7.4-cli -y
+ RUN  apt install -y php7.4-bcmath php7.4-xml \ 
+              php7.4-mysql  php7.4-zip  php7.4-intl \
+              php7.4-ldap  php7.4-gd  php7.4-cli \ 
+              php7.4-bz2  php7.4-curl  php7.4-mbstring \
+              php7.4-pgsql php7.4-opcache php7.4-soap  php7.4-cgi       
 
 RUN /etc/init.d/apache2 restart
 RUN chmod -R 777 /var/www/html
@@ -42,7 +46,6 @@ RUN bash nodesource_setup.sh
 RUN apt-get update
 RUN apt-get install nodejs -y && nodejs -v
 RUN apt-get install yarn -y
-
 
 # tool 
 RUN apt-get install nano
